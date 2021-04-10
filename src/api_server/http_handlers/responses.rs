@@ -6,5 +6,6 @@ pub fn encode(response: &impl Serialize) -> String {
 
 #[derive(Serialize)]
 pub struct Play {
+    pub code: String,
     pub session_id: String,
 }

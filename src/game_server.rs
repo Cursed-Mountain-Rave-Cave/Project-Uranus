@@ -1,6 +1,6 @@
 use actix::prelude::*;
 use std::collections::HashMap;
-use rand::{self, rngs::ThreadRng, /*Rng*/};
+
 mod room;
 use room::Room;
 pub mod requests;
@@ -8,9 +8,9 @@ use requests::Message;
 
 #[derive(Debug)]
 pub struct GameServer {
-    sessions: HashMap<usize, Recipient<Message>>,
-    rooms: HashMap<usize, Room>,
-    rng: ThreadRng, 
+    sessions: HashMap<String, Recipient<Message>>,
+    rooms: HashMap<String, Room>,
+    players_to_sessions: HashMap<String, String>,
 }
 
 impl GameServer {
@@ -18,7 +18,7 @@ impl GameServer {
         GameServer {
             sessions: HashMap::new(),
             rooms: HashMap::new(),
-            rng: rand::thread_rng(),
+            players_to_sessions: HashMap::new(),
         }
     }
 }
@@ -34,4 +34,3 @@ impl Actor for GameServer {
         println!("Context: {:?}", ctx);
     }
 }
-

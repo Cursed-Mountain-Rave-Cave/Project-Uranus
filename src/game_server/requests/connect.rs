@@ -1,7 +1,6 @@
-use crate::game_server::GameServer;
 use crate::game_server::requests::Message;
+use crate::game_server::GameServer;
 use actix::prelude::*;
-use rand::{self, /*rngs::ThreadRng,*/ Rng};
 
 /// New chat session is created
 #[derive(Message, Debug)]
@@ -19,7 +18,7 @@ impl Handler<Connect> for GameServer {
         println!("Server state: {:?}", self);
 
         // register session with random id
-        let id = self.rng.gen::<usize>();
+        let id = 0;
         //self.sessions.insert(id, msg.addr);
 
         //// auto join session to Main room
