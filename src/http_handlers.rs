@@ -1,4 +1,6 @@
 use actix_web::{get, post, HttpResponse, Responder};
+use uuid::Uuid;
+mod responses;
 
 #[get("/")]
 pub async fn hello() -> impl Responder {
@@ -10,6 +12,9 @@ pub async fn echo(req_body: String) -> impl Responder {
     HttpResponse::Ok().body(req_body)
 }
 
-pub async fn manual_hello() -> impl Responder {
-    HttpResponse::Ok().body("Hey there!")
+#[get("/play")]
+pub async fn play() -> impl Responder {
+    let session_id = Uuid::new_v4().to_hyphenated().to_string();
+    let response = responses::Play{session_id};
+    HttpResponse::Ok().body(responses::encode(&response))
 }
