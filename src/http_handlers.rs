@@ -1,4 +1,4 @@
-use actix_web::{get, post, HttpResponse, Responder};
+use actix_web::{get, post, web, HttpResponse, Responder};
 use uuid::Uuid;
 mod responses;
 
@@ -13,7 +13,8 @@ pub async fn echo(req_body: String) -> impl Responder {
 }
 
 #[get("/play")]
-pub async fn play() -> impl Responder {
+pub async fn play(game_server: web::Data<actix::Addr<crate::game_server::GameServer>>) -> impl Responder {
+    println!("game_server: {:?}", game_server);
     let session_id = Uuid::new_v4().to_hyphenated().to_string();
     let response = responses::Play{session_id};
     HttpResponse::Ok().body(responses::encode(&response))
