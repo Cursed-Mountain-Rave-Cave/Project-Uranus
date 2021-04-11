@@ -13,9 +13,9 @@ impl Handler<Register> for GameServer {
     type Result = String;
 
     fn handle(&mut self, msg: Register, _: &mut Context<Self>) -> Self::Result {
-        println!("Someone joined!");
-        println!("Msg: {:?}", msg);
-        println!("Server state: {:?}", self);
+        log::debug!("Someone joined!");
+        log::debug!("Msg: {:?}", msg);
+        log::debug!("Server state: {:?}", self);
 
         let id = uuid::Uuid::new_v4().to_hyphenated().to_string();
         self.players_to_sessions.insert(msg.player_id, id.clone());
