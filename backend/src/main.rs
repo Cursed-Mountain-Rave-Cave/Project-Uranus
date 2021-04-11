@@ -1,5 +1,6 @@
 mod api_server;
 mod game_server;
+mod utils;
 
 use actix::Actor;
 use actix_web::{middleware, App, HttpServer};
@@ -18,6 +19,7 @@ async fn main() -> std::io::Result<()> {
             .service(api_server::http_handlers::hello)
             .service(api_server::http_handlers::echo)
             .service(api_server::http_handlers::play)
+            .service(actix_web::web::resource("/ws/").to(api_server::ws_handlers::play))
     })
     .bind("localhost:4000")?
     .run()

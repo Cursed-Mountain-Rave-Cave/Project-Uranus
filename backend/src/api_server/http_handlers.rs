@@ -1,4 +1,5 @@
 use crate::game_server::requests::*;
+use crate::utils::json;
 use actix_web::{
     get, post,
     web::{Bytes, Data},
@@ -25,7 +26,7 @@ pub async fn play(
 ) -> impl Responder {
     println!("game_server: {:?}", game_server);
 
-    let body: requests::GameRequest = requests::decode(
+    let body: requests::GameRequest = json::decode(
         &String::from_utf8(bytes.to_vec())
             .map_err(|_| HttpResponse::BadRequest().finish())
             .unwrap(),
@@ -49,5 +50,5 @@ pub async fn play(
         },
     };
 
-    HttpResponse::Ok().body(responses::encode(&response))
+    HttpResponse::Ok().body(json::encode(&response))
 }
