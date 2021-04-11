@@ -3,7 +3,6 @@ use actix_web_actors::ws;
 
 use crate::game_server;
 use crate::game_server::requests::player_turn;
-use crate::utils;
 
 use std::time::{Duration, Instant};
 
@@ -74,7 +73,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsGameSession {
             }
             ws::Message::Text(text) => {
                 println!("Received text: {}\n", text);
-                let player_turn: player_turn::PlayerTurn = utils::json::decode(text.trim());
+                let player_turn: player_turn::PlayerTurn = serde_json::from_str(text.trim()).unwrap();
                 self.game_server_addr
                     .send(player_turn)
                     .into_actor(self)
@@ -82,7 +81,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsGameSession {
                         match res {
                             Ok(player_turn_response) => {
                                 println!("Send answer: {:?}", player_turn_response);
-                                context.text(utils::json::encode(&player_turn_response))
+                                context.text(serde_json::to_string(&player_turn_response).unwrap())
                             }
                             _ => context.stop(),
                         }

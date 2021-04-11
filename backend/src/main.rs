@@ -1,6 +1,5 @@
 mod api_server;
 mod game_server;
-mod utils;
 
 use actix::Actor;
 use actix_web::{middleware, App, HttpServer};
