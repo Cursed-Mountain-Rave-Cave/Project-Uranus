@@ -83,7 +83,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for WsGameSession {
                             Ok(player_turn_response) => {
                                 println!("Send answer: {:?}", player_turn_response);
                                 context.text(utils::json::encode(&player_turn_response))
-                            },
+                            }
                             _ => context.stop(),
                         }
                         fut::ready(())

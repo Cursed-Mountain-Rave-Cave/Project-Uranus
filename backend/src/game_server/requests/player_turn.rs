@@ -2,7 +2,7 @@ use crate::game_server::requests::Message;
 use crate::game_server::GameServer;
 use actix::dev::{MessageResponse, ResponseChannel};
 use actix::prelude::*;
-use serde::{ Serialize, Deserialize };
+use serde::{Deserialize, Serialize};
 
 #[derive(Message, Debug, Deserialize)]
 #[rtype(result = "PlayerTurnResponse")]
