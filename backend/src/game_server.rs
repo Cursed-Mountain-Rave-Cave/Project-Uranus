@@ -30,7 +30,7 @@ impl Actor for GameServer {
     type Context = Context<Self>;
 
     fn started(&mut self, ctx: &mut Self::Context) {
-        println!("Started GameServer actor!");
-        println!("Context: {:?}", ctx);
+        log::debug!("Started GameServer actor!");
+        log::debug!("Context: {:?}", ctx);
     }
 }

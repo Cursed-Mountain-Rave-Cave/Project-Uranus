@@ -17,9 +17,9 @@ const CLIENT_TIMEOUT: Duration = Duration::from_secs(10);
 
 /// do websocket handshake and start `MyWebSocket` actor
 async fn ws_index(r: HttpRequest, stream: web::Payload) -> Result<HttpResponse, Error> {
-    println!("{:?}", r);
+    log::debug!("{:?}", r);
     let res = ws::start(MyWebSocket::new(), &r, stream);
-    println!("{:?}", res);
+    log::debug!("{:?}", res);
     res
 }
 
@@ -48,7 +48,7 @@ impl StreamHandler<Result<ws::Message, ws::ProtocolError>> for MyWebSocket {
         ctx: &mut Self::Context,
     ) {
         // process websocket messages
-        println!("WS: {:?}", msg);
+        log::debug!("WS: {:?}", msg);
         match msg {
             Ok(ws::Message::Ping(msg)) => {
                 self.hb = Instant::now();
@@ -81,7 +81,7 @@ impl MyWebSocket {
             // check client heartbeats
             if Instant::now().duration_since(act.hb) > CLIENT_TIMEOUT {
                 // heartbeat timed out
-                println!("Websocket Client heartbeat failed, disconnecting!");
+                log::debug!("Websocket Client heartbeat failed, disconnecting!");
 
                 // stop actor
                 ctx.stop();

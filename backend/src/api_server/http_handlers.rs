@@ -23,8 +23,8 @@ pub async fn play(
     game_request: Json<requests::GameRequest>,
     game_server: Data<actix::Addr<crate::game_server::GameServer>>,
 ) -> impl Responder {
-    println!("game_server: {:?}", game_server);
-    println!("player_id: {}", game_request.player_id);
+    log::debug!("game_server: {:?}", game_server);
+    log::debug!("player_id: {}", game_request.player_id);
 
     let result = game_server
         .send(register::Register {

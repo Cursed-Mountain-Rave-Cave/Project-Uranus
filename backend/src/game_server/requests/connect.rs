@@ -13,9 +13,9 @@ impl Handler<Connect> for GameServer {
     type Result = String;
 
     fn handle(&mut self, msg: Connect, _: &mut Context<Self>) -> Self::Result {
-        println!("Someone joined!");
-        println!("Msg: {:?}", msg);
-        println!("Server state: {:?}", self);
+        log::debug!("Someone joined!");
+        log::debug!("Msg: {:?}", msg);
+        log::debug!("Server state: {:?}", self);
 
         // register session with random id
         let id = "".to_owned();
