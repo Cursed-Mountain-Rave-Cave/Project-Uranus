@@ -4,13 +4,13 @@ use actix::prelude::*;
 
 /// New chat session is created
 #[derive(Message, Debug)]
-#[rtype(usize)]
+#[rtype(String)]
 pub struct Connect {
     pub addr: Recipient<Message>,
 }
 
 impl Handler<Connect> for GameServer {
-    type Result = usize;
+    type Result = String;
 
     fn handle(&mut self, msg: Connect, _: &mut Context<Self>) -> Self::Result {
         log::debug!("Someone joined!");
@@ -18,7 +18,7 @@ impl Handler<Connect> for GameServer {
         log::debug!("Server state: {:?}", self);
 
         // register session with random id
-        let id = 0;
+        let id = "".to_owned();
         //self.sessions.insert(id, msg.addr);
 
         //// auto join session to Main room

@@ -1,7 +1,7 @@
 use crate::game_server::requests::*;
 use actix_web::{
     get, post,
-    web::{Bytes, Data},
+    web::{Data, Json},
     HttpResponse, Responder,
 };
 
@@ -20,21 +20,15 @@ pub async fn echo(req_body: String) -> impl Responder {
 
 #[post("/play")]
 pub async fn play(
-    bytes: Bytes,
+    game_request: Json<requests::GameRequest>,
     game_server: Data<actix::Addr<crate::game_server::GameServer>>,
 ) -> impl Responder {
     log::debug!("game_server: {:?}", game_server);
-
-    let body: requests::GameRequest = requests::decode(
-        &String::from_utf8(bytes.to_vec())
-            .map_err(|_| HttpResponse::BadRequest().finish())
-            .unwrap(),
-    );
-    log::debug!("player_id: {}", body.player_id);
+    log::debug!("player_id: {}", game_request.player_id);
 
     let result = game_server
         .send(register::Register {
-            player_id: body.player_id.clone(),
+            player_id: game_request.player_id.clone(),
         })
         .await;
 
@@ -49,5 +43,5 @@ pub async fn play(
         },
     };
 
-    HttpResponse::Ok().body(responses::encode(&response))
+    HttpResponse::Ok().json(response)
 }

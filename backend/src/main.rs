@@ -19,6 +19,7 @@ async fn main() -> std::io::Result<()> {
             .service(api_server::http_handlers::hello)
             .service(api_server::http_handlers::echo)
             .service(api_server::http_handlers::play)
+            .service(actix_web::web::resource("/ws/").to(api_server::ws_handlers::play))
     })
     .bind("localhost:4000")?
     .run()
