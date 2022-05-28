@@ -4,8 +4,8 @@ use crate::data_type::CircularQueue;
 use field::EndlessField;
 use field::Coordinates;
 
-pub trait Game {
-    
+pub trait Game<FigureType: Eq + Clone> {
+    fn make_move(&mut self, figure: FigureType, coord: Coordinates) -> Result<(), String>;
 }
 
 pub struct EndlessFieldGame<F: Eq + Clone> {
@@ -21,16 +21,18 @@ impl<FigureType: Eq + Clone> EndlessFieldGame<FigureType> {
         }
     }
 
-    pub fn make_move(&mut self, figure: FigureType, coord: Coordinates) -> Result<(), String> {
+    fn put_current_figure(&mut self, coord: Coordinates) -> Result<(), String> {
+        self.field.add_figure(self.figures_queue.next().clone(), coord)
+    }
+}
+
+impl<FigureType: Eq + Clone> Game<FigureType> for EndlessFieldGame<FigureType> {
+    fn make_move(&mut self, figure: FigureType, coord: Coordinates) -> Result<(), String> {
         if *self.figures_queue.current() == figure {
             self.put_current_figure(coord)
         } else {
             Err(String::from("Cant make such move"))
         }
-    }
-
-    fn put_current_figure(&mut self, coord: Coordinates) -> Result<(), String> {
-        self.field.add_figure(self.figures_queue.next().clone(), coord)
     }
 }
 
