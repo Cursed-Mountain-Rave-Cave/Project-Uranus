@@ -1,0 +1,18 @@
+.tile {
+    background: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 80px;
+    font-family: cursive;
+    color: #222222;
+}
+
+.tile:hover {
+    background: #eeeeee;
+}
+
+.tileWinner {
+    color: green;
+}
